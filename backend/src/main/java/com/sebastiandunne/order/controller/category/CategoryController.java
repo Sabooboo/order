@@ -1,4 +1,4 @@
-package com.sebastiandunne.order.controller;
+package com.sebastiandunne.order.controller.category;
 
 import com.sebastiandunne.order.entity.Category;
 import com.sebastiandunne.order.repository.CategoryRepository;
@@ -15,10 +15,8 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     @GetMapping("/categories")
-    public List<String> getCategories() {
+    public List<Category> getCategories() {
         List<Category> categories = categoryRepository.findAll();
-        return categories.stream()
-                .map(category -> "Category " + category.getId() + ": " + category.getName())
-                .collect(Collectors.toList());
+        return categories;
     }
 }

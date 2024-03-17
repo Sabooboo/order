@@ -1,4 +1,4 @@
-package com.sebastiandunne.order.controller;
+package com.sebastiandunne.order.controller.order;
 
 import com.sebastiandunne.order.entity.Order;
 import com.sebastiandunne.order.repository.OrderRepository;
