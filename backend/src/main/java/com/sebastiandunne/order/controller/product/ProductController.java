@@ -19,4 +19,11 @@ public class ProductController {
     public List<Product> getProducts() {
         return productRepository.findAll();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Integer id) {
+        return productRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
