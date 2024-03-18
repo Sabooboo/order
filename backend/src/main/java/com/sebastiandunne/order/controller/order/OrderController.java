@@ -46,12 +46,19 @@ public class OrderController {
         newOrder.setCustomer(customer);
 
         Product product = productRepository.findById(orderRequest.getProductId()).get();
+        int newStock = product.getStock() - orderRequest.getQuantity();
+        if (newStock < 0) {
+            return ResponseEntity.status(400).build();
+        }
+        product.setStock(newStock);
         newOrder.setProduct(product);
 
         newOrder.setQuantity(orderRequest.getQuantity());
         newOrder.setPrice(product.getPrice() * orderRequest.getQuantity());
 
         orderRepository.save(newOrder);
+        productRepository.save(product);
+
         return ResponseEntity.ok().body(newOrder);
     }
 }
