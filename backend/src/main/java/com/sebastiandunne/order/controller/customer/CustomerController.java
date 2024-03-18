@@ -11,12 +11,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController()
-@RequestMapping("/customers")
 public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @GetMapping("/")
+    @GetMapping("/customers")
     public List<String> getCustomers() {
         List<Customer> customers = customerRepository.findAll();
         return customers.stream()

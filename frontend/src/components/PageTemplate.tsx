@@ -1,13 +1,16 @@
-import { Box, Flex, Heading, Avatar, Link } from '@chakra-ui/react';
+import { Box, Flex, Heading, Avatar, Link, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Button, useDisclosure } from '@chakra-ui/react';
 import useUserContext from '../Context/UseUserContext';
-import { If, Then, Else } from 'react-if';
 import { useState } from 'react';
 
 export default function PageTemplate({ children }: { children: React.ReactNode }) {
-  const userContext = useUserContext();
-  const { user } = userContext;
+  const { user, signIn } = useUserContext();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [email, setEmail] = useState('');
 
-  const [signInModalOpen, setSignInModalOpen] = useState(false);
+  const handleSignIn = () => {
+    signIn(email);
+    onClose();
+  };
 
   return (
     <Flex direction="column" align="center">
@@ -16,16 +19,29 @@ export default function PageTemplate({ children }: { children: React.ReactNode }
           <Heading as="h1" size="2xl" color="white">
             My Store
           </Heading>
-          <If condition={!!user}>
-            <Then>
-              <Avatar name={user?.email} src="" />
-            </Then>
-            <Else>
-              <Link as='button' color="white" onClick={() => setSignInModalOpen(true)}>Sign in</Link>
-            </Else>
-          </If>
+          {user ? (
+            <Avatar name={user.email} src="" />
+          ) : (
+            <Link color="white" onClick={onOpen}>Sign in</Link>
+          )}
         </Flex>
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Sign In</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Email</FormLabel>
+              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </FormControl>
+            <Button mt={4} colorScheme="blue" onClick={handleSignIn}>Sign In</Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
       {children}
     </Flex>
   );
