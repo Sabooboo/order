@@ -1,9 +1,10 @@
-import { Flex, Heading, Text, Box, Select } from "@chakra-ui/react";
+import { Flex, Heading, Text, Box, Select, Link as Link } from "@chakra-ui/react";
 import { AsyncWrapper } from "../components/AsyncWrapper";
 import useAxios from 'axios-hooks';
 import { Product } from "../models/api";
 import formatCurrency from "../helpers/formatCurrency";
 import { ChangeEvent, useCallback, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function ProductsPage() {
   const [products] = useAxios<Product[]>('/api/products');
@@ -35,6 +36,7 @@ export default function ProductsPage() {
             <Text>Price: {formatCurrency(product.price)}</Text>
             <Text>Stock: {product.stock}</Text>
             <Text>Category: {product.category.name}</Text>
+            <Link color="blue.500" fontWeight='700' textDecor='underline' as={RouterLink} to={`/products/${product.id}`}>Details</Link>
           </Box>
         ))}
       </Flex>
